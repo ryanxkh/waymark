@@ -517,7 +517,7 @@ const slides: Slide[] = [
     type: "business-case",
     sectionLabel: "THE BUSINESS CASE",
     title: "Where You Are → Where This Gets You",
-    subtitle: "Everything in this architecture maps back to something you told me in discovery. Here's how it translates to the numbers you report to the board.",
+    subtitle: "Everything in this architecture maps back to something you told me in discovery.",
     rows: [
       {
         icon: "analytics",
