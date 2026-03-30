@@ -1,0 +1,362 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@theme inline {
+  --font-sans: 'Geist', 'Geist Fallback';
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Presentation animations */
+@keyframes dashFlow {
+  from { stroke-dashoffset: 14; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.06) translate(2%, -2%);
+  }
+}
+
+@keyframes pulse-slower {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08) translate(-1%, 1%);
+  }
+}
+
+@keyframes pulse-accent {
+  0%, 100% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  33% {
+    opacity: 0.6;
+    transform: scale(1.04);
+  }
+  66% {
+    opacity: 1;
+    transform: scale(0.98);
+  }
+}
+
+@keyframes spin-very-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 6s ease-in-out infinite;
+}
+
+.animate-pulse-slower {
+  animation: pulse-slower 10s ease-in-out infinite;
+}
+
+.animate-pulse-accent {
+  animation: pulse-accent 8s ease-in-out infinite;
+}
+
+.animate-spin-very-slow {
+  animation: spin-very-slow 120s linear infinite;
+}
+
+/* Responsive typography utilities */
+.text-responsive-xs {
+  font-size: 10px;
+}
+@media (min-width: 640px) {
+  .text-responsive-xs {
+    font-size: 12px;
+  }
+}
+
+.text-responsive-sm {
+  font-size: 12px;
+}
+@media (min-width: 640px) {
+  .text-responsive-sm {
+    font-size: 14px;
+  }
+}
+
+.text-responsive-base {
+  font-size: 14px;
+}
+@media (min-width: 640px) {
+  .text-responsive-base {
+    font-size: 16px;
+  }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets on touch devices */
+  button, 
+  [role="button"],
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Prevent text selection on double-tap */
+  .touch-manipulation {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: max(0px)) {
+  .safe-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+  .safe-top {
+    padding-top: max(0.5rem, env(safe-area-inset-top));
+  }
+}
+
+/* Improve readability on small screens */
+@media (max-width: 640px) {
+  .prose {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+}
+
+/* ===========================================
+   PRESENTATION DESIGN SYSTEM
+   Standardized layout utilities for slides
+   =========================================== */
+
+/* Slide Container - standard wrapper for all slides */
+.slide-container {
+  @apply w-full h-full flex flex-col px-4 sm:px-6 lg:px-10 py-4 lg:py-8;
+  @apply overflow-y-auto lg:overflow-hidden;
+  @apply justify-start lg:justify-center;
+}
+
+/* Two-column layout wrapper */
+.slide-two-col {
+  @apply flex flex-col lg:flex-row gap-4 lg:gap-8;
+  @apply items-start lg:items-start;
+  @apply w-full;
+}
+
+/* Column variants */
+.slide-col-55 {
+  @apply w-full lg:w-[55%] flex flex-col;
+}
+
+.slide-col-45 {
+  @apply w-full lg:w-[45%] flex flex-col;
+}
+
+.slide-col-50 {
+  @apply w-full lg:w-[50%] flex flex-col;
+}
+
+/* Section label - consistent across all slides */
+.slide-section-label {
+  @apply text-xs tracking-widest text-teal-400 font-mono uppercase mb-2;
+}
+
+/* Slide title - standardized */
+.slide-title {
+  @apply text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3 lg:mb-4;
+  @apply leading-tight text-balance;
+}
+
+/* Slide subtitle/description */
+.slide-subtitle {
+  @apply text-sm sm:text-base text-neutral-400 mb-4 lg:mb-6;
+  @apply max-w-2xl leading-relaxed;
+}
+
+/* Card component - standard styling */
+.slide-card {
+  @apply bg-[#111111] border border-[#222222] rounded-lg p-3 sm:p-4;
+  @apply transition-all duration-300;
+}
+
+.slide-card:hover {
+  @apply border-[#333333];
+}
+
+/* List item card */
+.slide-list-item {
+  @apply bg-[#0d0d0d] border border-[#1a1a1a] rounded-lg p-3 sm:p-4;
+  @apply transition-all duration-300;
+}
+
+/* Stats badge */
+.slide-stat-badge {
+  @apply bg-[#0d0d0d] border border-[#1a1a1a] rounded px-3 py-1.5;
+}
+
+.slide-stat-badge span {
+  @apply text-[10px] sm:text-xs text-neutral-500 leading-tight block;
+}
+
+/* Mobile-only content */
+.mobile-only {
+  @apply block lg:hidden;
+}
+
+/* Desktop-only content */
+.desktop-only {
+  @apply hidden lg:flex;
+}
+
+/* Animation utilities for slide transitions */
+.slide-fade-in {
+  @apply transition-all duration-700 ease-out;
+}
+
+.slide-fade-in.visible {
+  @apply opacity-100 translate-y-0;
+}
+
+.slide-fade-in.hidden {
+  @apply opacity-0 translate-y-4;
+}
+
+/* Consistent gap utilities */
+.gap-slide-items {
+  @apply gap-2 sm:gap-3;
+}
+
+.gap-slide-sections {
+  @apply gap-4 lg:gap-6;
+}
