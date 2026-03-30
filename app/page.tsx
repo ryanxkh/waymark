@@ -233,10 +233,11 @@ interface RevealSlide {
   sectionLabel: string
   title: string
   subtitle: string
+  demoLinkText: string
+  demoUrl: string
   lighthouseOldImage: string
   lighthouseNewImage: string
   demoScreenshot: string
-  demoUrl: string
   footer: string
 }
 
@@ -551,11 +552,12 @@ const slides: Slide[] = [
     type: "reveal",
     sectionLabel: "NEXT STEPS",
     title: "A Quick Demo",
-    subtitle: "Before our conversation, I built a version of your site on Vercel using v0 to see what the performance delta looks like and what the AI agent feels like in production.",
+    subtitle: "Before our conversation, I built a version of your site on Vercel using v0 to see what the performance delta looks like and what the AI agent feels like in production. View the demo at:",
+    demoLinkText: "waymarktravel.vercel.app",
+    demoUrl: "https://waymarktravel.vercel.app/",
     lighthouseOldImage: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/oldsitenotonvercel2-Tx1bUsaeu9iJwjKvZbpmMeTlP1MLWF.png",
     lighthouseNewImage: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202026-03-22%20at%2011.36.24%E2%80%AFPM-2npsiNb4jFdPZYPG7cMgiroUGlyyEc.png",
     demoScreenshot: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202026-03-22%20at%2010.24.50%E2%80%AFPM.png-4lpeGpScYiycPTjZAfexKYQ1sKSc4k.jpeg",
-    demoUrl: "https://waymarktravel.vercel.app/",
     footer: "",
   },
   {
@@ -2320,14 +2322,22 @@ case "analytics":
               </h2>
 
     {/* Subtitle */}
-    <p
-      className={`text-sm text-neutral-400 mb-4 max-w-3xl transition-all duration-700 ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-      }`}
-      style={{ transitionDelay: isVisible ? "200ms" : "0ms" }}
-    >
-      {slide.subtitle}
-    </p>
+              <p
+                className={`text-sm text-neutral-400 mb-4 max-w-3xl transition-all duration-700 ${
+                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                }`}
+                style={{ transitionDelay: isVisible ? "200ms" : "0ms" }}
+              >
+                {slide.subtitle}{" "}
+                <a 
+                  href={slide.demoUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-teal-400 hover:text-teal-300 underline underline-offset-2 transition-colors"
+                >
+                  {slide.demoLinkText}
+                </a>
+              </p>
 
     {/* Lighthouse Comparison - Fixed height approach */}
     <div 
