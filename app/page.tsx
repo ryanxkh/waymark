@@ -706,7 +706,7 @@ export default function Presentation() {
 
   return (
     <main
-      className="min-h-screen w-screen bg-black relative overflow-x-hidden overflow-y-auto lg:overflow-hidden lg:h-screen focus:outline-none"
+      className="min-h-screen w-screen bg-black relative overflow-x-hidden overflow-y-auto lg:overflow-hidden lg:h-screen lg:max-h-screen focus:outline-none"
       tabIndex={0}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
@@ -785,12 +785,12 @@ export default function Presentation() {
       />
 
       {/* Inset content area */}
-      <div className="relative lg:absolute inset-0 lg:inset-4 xl:inset-8 2xl:inset-12 flex flex-col min-h-screen lg:min-h-0 p-4 sm:p-6 lg:p-0">
+      <div className="relative lg:absolute inset-0 lg:inset-4 xl:inset-8 2xl:inset-12 flex flex-col min-h-screen lg:min-h-0 p-4 sm:p-6 lg:p-0 pb-20 lg:pb-0">
         {/* Decorative border overlay */}
         <div className="hidden lg:block absolute inset-0 border border-neutral-800/60 pointer-events-none" />
 
         {/* Centered content */}
-        <div className="flex-1 flex flex-col items-center justify-start lg:justify-center gap-4 lg:gap-6 relative py-8 lg:py-0">
+        <div className="flex-1 flex flex-col items-center justify-start lg:justify-center gap-4 lg:gap-6 relative py-4 lg:py-0">
           {slide.type === "title" ? (
             <>
               {/* Vercel triangle logo */}
@@ -855,11 +855,11 @@ export default function Presentation() {
             </>
           ) : slide.type === "discovery" ? (
             <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-              {/* Section label - top left */}
-              <div 
-                className={`absolute top-8 left-8 transition-all duration-700 ease-out ${
-                  isVisible 
-                    ? "opacity-100 translate-y-0" 
+              {/* Section label */}
+              <div
+                className={`mb-2 transition-all duration-700 ease-out ${
+                  isVisible
+                    ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-4"
                 }`}
                 style={{ transitionDelay: isVisible ? "0ms" : "0ms" }}
@@ -870,8 +870,8 @@ export default function Presentation() {
               </div>
 
               {/* Headline */}
-              <h2 
-                className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-white leading-[1.1] tracking-tight mb-6 sm:mb-8 transition-all duration-700 ease-out ${
+              <h2
+                className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-white leading-[1.1] tracking-tight mb-4 sm:mb-6 transition-all duration-700 ease-out ${
                   isVisible 
                     ? "opacity-100 translate-y-0" 
                     : "opacity-0 translate-y-8"
@@ -966,8 +966,8 @@ export default function Presentation() {
               </div>
             </div>
           ) : slide.type === "fdi" ? (
-            <div className="w-full h-full flex flex-col px-4 sm:px-6 lg:px-8 py-4">
-              {/* Section label - top left */}
+            <div className="w-full flex flex-col px-4 sm:px-6 lg:px-8 py-4 lg:h-full">
+              {/* Section label */}
               <div 
                 className={`mb-4 transition-all duration-700 ease-out ${
                   isVisible 
@@ -1195,7 +1195,7 @@ case "agent":
                   </p>
 
                   {/* List items */}
-                  <div className="flex flex-col gap-2 flex-1 overflow-hidden min-h-0">
+                  <div className="flex flex-col gap-2 flex-1 lg:overflow-hidden lg:min-h-0">
                     {slide.listItems.map((item, index) => {
                       const getListIcon = (iconType: string) => {
                         switch (iconType) {
@@ -1247,7 +1247,7 @@ case "agent":
                               <span className="text-[10px] text-teal-400 font-mono">{item.step}</span>
                               <h3 className="text-sm font-semibold text-white">{item.title}</h3>
                             </div>
-                            <p className="text-xs text-neutral-400 leading-relaxed line-clamp-2">{item.description}</p>
+                            <p className="text-xs text-neutral-400 leading-relaxed lg:line-clamp-2">{item.description}</p>
                           </div>
                         </div>
                       )
@@ -2091,7 +2091,7 @@ case "agent":
                   </div>
 
                   {/* Right side - Stacked Use Cases */}
-                  <div className="lg:w-[50%] flex flex-col justify-start pt-0 lg:pt-16">
+                  <div className="w-full lg:w-[50%] flex flex-col justify-start pt-0 lg:pt-16">
                     <div 
                       className={`transition-all duration-700 ${
                         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -2212,7 +2212,7 @@ case "agent":
               </p>
 
               {/* Business case rows */}
-              <div className="flex flex-col gap-3 flex-1">
+              <div className="flex flex-col gap-3">
                 {slide.rows.map((row, index) => {
                   const getRowIcon = (iconType: string) => {
                     switch (iconType) {
@@ -2330,8 +2330,8 @@ case "analytics":
     </p>
 
     {/* Lighthouse Comparison - Fixed height approach */}
-    <div 
-      className={`grid grid-cols-[1fr_auto_1fr] gap-4 lg:gap-6 items-center transition-all duration-700 ${
+    <div
+      className={`grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-4 lg:gap-6 items-center transition-all duration-700 ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       }`}
       style={{ transitionDelay: isVisible ? "300ms" : "0ms" }}
@@ -2357,7 +2357,7 @@ case "analytics":
             </div>
           </div>
           {/* Screenshot - fixed height */}
-          <div className="h-[200px] lg:h-[280px] overflow-hidden">
+          <div className="h-[160px] sm:h-[200px] lg:h-[280px] overflow-hidden">
             <img 
               src={slide.lighthouseOldImage} 
               alt="Current site Lighthouse scores" 
@@ -2375,7 +2375,7 @@ case "analytics":
       </div>
 
       {/* Arrow */}
-      <div className="flex items-center justify-center text-teal-400 text-3xl lg:text-4xl font-light">→</div>
+      <div className="hidden sm:flex items-center justify-center text-teal-400 text-3xl lg:text-4xl font-light">→</div>
 
       {/* On Vercel */}
       <div className="flex flex-col">
@@ -2408,7 +2408,7 @@ case "analytics":
             </svg>
           </div>
           {/* Screenshot - fixed height */}
-          <div className="h-[200px] lg:h-[280px] overflow-hidden">
+          <div className="h-[160px] sm:h-[200px] lg:h-[280px] overflow-hidden">
             <img 
               src={slide.lighthouseNewImage} 
               alt="Vercel site Lighthouse scores" 
@@ -2427,8 +2427,8 @@ case "analytics":
     </div>
 
     {/* Callouts */}
-    <div 
-      className={`flex items-center justify-center gap-6 lg:gap-10 mt-6 text-sm text-teal-400 transition-all duration-700 ${
+    <div
+      className={`flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 lg:gap-10 mt-4 sm:mt-6 text-sm text-teal-400 transition-all duration-700 ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
       style={{ transitionDelay: isVisible ? "400ms" : "0ms" }}
@@ -2489,7 +2489,7 @@ case "analytics":
               </p>
 
 {/* Full-width stacked layout */}
-              <div className="flex flex-col gap-3 flex-1 overflow-hidden">
+              <div className="flex flex-col gap-3 flex-1 lg:overflow-hidden">
                 
                 {/* SECTION 1: Scope Card */}
                 <div 
