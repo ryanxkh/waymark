@@ -592,7 +592,6 @@ export default function Presentation() {
   const [isAnimating, setIsAnimating] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [cachingMode, setCachingMode] = useState<"isr" | "api" | "external" | "image">("isr")
-  const mainRef = useRef<HTMLElement>(null)
 
   // Initial mount animation
   useEffect(() => {
@@ -602,27 +601,19 @@ export default function Presentation() {
     return () => clearTimeout(timer)
   }, [])
 
-  // Reset scroll to top when changing slides
-  const scrollToTop = useCallback(() => {
-    // On mobile, the document scrolls (not main). On desktop, main is the container.
-    window.scrollTo(0, 0)
-    mainRef.current?.scrollTo(0, 0)
-  }, [])
-
   const goToNext = useCallback(() => {
     if (currentSlide < slides.length - 1) {
       setIsAnimating(true)
       setIsVisible(false)
       setTimeout(() => {
         setCurrentSlide((prev) => prev + 1)
-        scrollToTop()
         setTimeout(() => {
           setIsVisible(true)
           setIsAnimating(false)
         }, 50)
       }, 400)
     }
-  }, [currentSlide, scrollToTop])
+  }, [currentSlide])
 
   const goToPrev = useCallback(() => {
     if (currentSlide > 0) {
@@ -630,14 +621,13 @@ export default function Presentation() {
       setIsVisible(false)
       setTimeout(() => {
         setCurrentSlide((prev) => prev - 1)
-        scrollToTop()
         setTimeout(() => {
           setIsVisible(true)
           setIsAnimating(false)
         }, 50)
       }, 400)
     }
-  }, [currentSlide, scrollToTop])
+  }, [currentSlide])
 
   const goToSlide = useCallback((index: number) => {
     if (index !== currentSlide && !isAnimating) {
@@ -645,14 +635,13 @@ export default function Presentation() {
       setIsVisible(false)
       setTimeout(() => {
         setCurrentSlide(index)
-        scrollToTop()
         setTimeout(() => {
           setIsVisible(true)
           setIsAnimating(false)
         }, 50)
       }, 400)
     }
-  }, [currentSlide, isAnimating, scrollToTop])
+  }, [currentSlide, isAnimating])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -685,45 +674,33 @@ export default function Presentation() {
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [goToNext, goToPrev, goToSlide, isAnimating])
 
-  // Touch/swipe support for mobile — passive listeners on document so iOS scroll is never blocked
+  // Touch/swipe: passive listeners + plain vars (no setState = no re-renders during scroll)
   useEffect(() => {
-    let startX = 0
-    let startY = 0
-    let endX = 0
-    let endY = 0
-    const minSwipeDistance = 50
-
-    const onTouchStart = (e: TouchEvent) => {
-      startX = e.touches[0].clientX
-      startY = e.touches[0].clientY
-      endX = startX
-      endY = startY
+    let startX = 0, startY = 0, endX = 0, endY = 0
+    const onStart = (e: TouchEvent) => { startX = endX = e.touches[0].clientX; startY = endY = e.touches[0].clientY }
+    const onMove = (e: TouchEvent) => { endX = e.touches[0].clientX; endY = e.touches[0].clientY }
+    const onEnd = () => {
+      const dx = startX - endX, dy = Math.abs(startY - endY)
+      if (dy > Math.abs(dx)) return // vertical scroll — don't interfere
+      if (dx > 50) goToNext()
+      else if (dx < -50) goToPrev()
     }
-
-    const onTouchMove = (e: TouchEvent) => {
-      endX = e.touches[0].clientX
-      endY = e.touches[0].clientY
-    }
-
-    const onTouchEnd = () => {
-      const distanceX = startX - endX
-      const distanceY = Math.abs(startY - endY)
-      // Only fire on dominant horizontal swipes
-      if (distanceY > Math.abs(distanceX)) return
-      if (distanceX > minSwipeDistance) goToNext()
-      else if (distanceX < -minSwipeDistance) goToPrev()
-    }
-
-    document.addEventListener("touchstart", onTouchStart, { passive: true })
-    document.addEventListener("touchmove", onTouchMove, { passive: true })
-    document.addEventListener("touchend", onTouchEnd, { passive: true })
-
+    document.addEventListener("touchstart", onStart, { passive: true })
+    document.addEventListener("touchmove", onMove, { passive: true })
+    document.addEventListener("touchend", onEnd, { passive: true })
     return () => {
-      document.removeEventListener("touchstart", onTouchStart)
-      document.removeEventListener("touchmove", onTouchMove)
-      document.removeEventListener("touchend", onTouchEnd)
+      document.removeEventListener("touchstart", onStart)
+      document.removeEventListener("touchmove", onMove)
+      document.removeEventListener("touchend", onEnd)
     }
   }, [goToNext, goToPrev])
+
+  // Scroll to top on slide change
+  const mainRef = useRef<HTMLElement>(null)
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    mainRef.current?.scrollTo(0, 0)
+  }, [currentSlide])
 
   const slide = slides[currentSlide]
 
@@ -734,7 +711,7 @@ export default function Presentation() {
   return (
     <main
       ref={mainRef}
-      className="w-screen bg-black relative overflow-x-hidden lg:overflow-hidden lg:h-[100dvh] focus:outline-none"
+      className="min-h-screen w-screen bg-black relative overflow-x-hidden overflow-y-auto lg:overflow-hidden lg:h-screen focus:outline-none"
       tabIndex={0}
     >
       {/* Static color burst in lower left corner with pulse animation */}
@@ -810,12 +787,12 @@ export default function Presentation() {
       />
 
       {/* Inset content area */}
-      <div className="relative lg:absolute lg:inset-4 xl:inset-8 2xl:inset-12 flex flex-col lg:min-h-0 px-4 pt-4 pb-24 sm:px-6 sm:pt-6 lg:p-0">
+      <div className="relative lg:absolute inset-0 lg:inset-4 xl:inset-8 2xl:inset-12 flex flex-col min-h-screen lg:min-h-0 p-4 pb-20 sm:p-6 sm:pb-20 lg:p-0">
         {/* Decorative border overlay */}
         <div className="hidden lg:block absolute inset-0 border border-neutral-800/60 pointer-events-none" />
 
         {/* Centered content */}
-        <div className="flex flex-col items-center justify-start lg:justify-center lg:flex-1 gap-4 lg:gap-6 relative lg:py-0">
+        <div className="flex-1 flex flex-col items-center justify-start lg:justify-center gap-4 lg:gap-6 relative py-8 lg:py-0">
           {slide.type === "title" ? (
             <>
               {/* Vercel triangle logo */}
@@ -991,8 +968,8 @@ export default function Presentation() {
               </div>
             </div>
           ) : slide.type === "fdi" ? (
-            <div className="w-full flex flex-col px-4 sm:px-6 lg:px-8 py-4 lg:h-full">
-              {/* Section label */}
+            <div className="w-full h-full flex flex-col px-4 sm:px-6 lg:px-8 py-4">
+              {/* Section label - top left */}
               <div 
                 className={`mb-4 transition-all duration-700 ease-out ${
                   isVisible 
@@ -1220,7 +1197,7 @@ case "agent":
                   </p>
 
                   {/* List items */}
-                  <div className="flex flex-col gap-2 flex-1 lg:overflow-hidden lg:min-h-0">
+                  <div className="flex flex-col gap-2 flex-1 overflow-hidden min-h-0">
                     {slide.listItems.map((item, index) => {
                       const getListIcon = (iconType: string) => {
                         switch (iconType) {
@@ -2116,7 +2093,7 @@ case "agent":
                   </div>
 
                   {/* Right side - Stacked Use Cases */}
-                  <div className="w-full lg:w-[50%] flex flex-col justify-start pt-0 lg:pt-16">
+                  <div className="lg:w-[50%] flex flex-col justify-start pt-0 lg:pt-16">
                     <div 
                       className={`transition-all duration-700 ${
                         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -2237,7 +2214,7 @@ case "agent":
               </p>
 
               {/* Business case rows */}
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 flex-1">
                 {slide.rows.map((row, index) => {
                   const getRowIcon = (iconType: string) => {
                     switch (iconType) {
@@ -2363,7 +2340,7 @@ case "analytics":
               </p>
 
     {/* Lighthouse Comparison - Fixed height approach */}
-    <div
+    <div 
       className={`grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-4 lg:gap-6 items-center transition-all duration-700 ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       }`}
@@ -2390,7 +2367,7 @@ case "analytics":
             </div>
           </div>
           {/* Screenshot - fixed height */}
-          <div className="h-[160px] sm:h-[200px] lg:h-[280px] overflow-hidden">
+          <div className="h-[200px] lg:h-[280px] overflow-hidden">
             <img 
               src={slide.lighthouseOldImage} 
               alt="Current site Lighthouse scores" 
@@ -2441,7 +2418,7 @@ case "analytics":
             </svg>
           </div>
           {/* Screenshot - fixed height */}
-          <div className="h-[160px] sm:h-[200px] lg:h-[280px] overflow-hidden">
+          <div className="h-[200px] lg:h-[280px] overflow-hidden">
             <img 
               src={slide.lighthouseNewImage} 
               alt="Vercel site Lighthouse scores" 
@@ -2460,7 +2437,7 @@ case "analytics":
     </div>
 
     {/* Callouts */}
-    <div
+    <div 
       className={`flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 lg:gap-10 mt-4 sm:mt-6 text-sm text-teal-400 transition-all duration-700 ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
@@ -2522,7 +2499,7 @@ case "analytics":
               </p>
 
 {/* Full-width stacked layout */}
-              <div className="flex flex-col gap-3 flex-1 lg:overflow-hidden">
+              <div className="flex flex-col gap-3 flex-1 overflow-hidden">
                 
                 {/* SECTION 1: Scope Card */}
                 <div 
@@ -2675,10 +2652,7 @@ case "analytics":
       </div>
 
 {/* Navigation bar - arrows + dots */}
-      <div
-        className="fixed left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 bg-neutral-900/90 backdrop-blur-sm px-3 py-2 sm:px-4 sm:py-2.5 rounded-full border border-neutral-800/50 z-50"
-        style={{ bottom: "max(1rem, env(safe-area-inset-bottom, 0px))" }}
-      >
+      <div className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] sm:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 bg-neutral-900/90 backdrop-blur-sm px-3 py-2 sm:px-4 sm:py-2.5 rounded-full border border-neutral-800/50 z-50">
         {/* Previous arrow */}
         <button
           onClick={goToPrev}
@@ -2727,10 +2701,7 @@ case "analytics":
       </div>
 
       {/* Keyboard hint - hidden on mobile */}
-      <div
-        className="hidden sm:block fixed right-4 sm:right-6 text-neutral-600 text-[10px] sm:text-xs font-mono"
-        style={{ bottom: "max(1rem, env(safe-area-inset-bottom, 0px))" }}
-      >
+      <div className="hidden sm:block fixed bottom-4 sm:bottom-6 right-4 sm:right-6 text-neutral-600 text-[10px] sm:text-xs font-mono">
         Use arrow keys to navigate
       </div>
 
