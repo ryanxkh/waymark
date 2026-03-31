@@ -7,7 +7,7 @@
  */
 
 // React hooks
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 
 // Lucide icons
 import { 
@@ -592,6 +592,7 @@ export default function Presentation() {
   const [isAnimating, setIsAnimating] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [cachingMode, setCachingMode] = useState<"isr" | "api" | "external" | "image">("isr")
+  const mainRef = useRef<HTMLElement>(null)
 
   // Initial mount animation
   useEffect(() => {
@@ -601,19 +602,25 @@ export default function Presentation() {
     return () => clearTimeout(timer)
   }, [])
 
+  // Reset scroll to top when changing slides
+  const scrollToTop = useCallback(() => {
+    mainRef.current?.scrollTo(0, 0)
+  }, [])
+
   const goToNext = useCallback(() => {
     if (currentSlide < slides.length - 1) {
       setIsAnimating(true)
       setIsVisible(false)
       setTimeout(() => {
         setCurrentSlide((prev) => prev + 1)
+        scrollToTop()
         setTimeout(() => {
           setIsVisible(true)
           setIsAnimating(false)
         }, 50)
       }, 400)
     }
-  }, [currentSlide])
+  }, [currentSlide, scrollToTop])
 
   const goToPrev = useCallback(() => {
     if (currentSlide > 0) {
@@ -621,13 +628,14 @@ export default function Presentation() {
       setIsVisible(false)
       setTimeout(() => {
         setCurrentSlide((prev) => prev - 1)
+        scrollToTop()
         setTimeout(() => {
           setIsVisible(true)
           setIsAnimating(false)
         }, 50)
       }, 400)
     }
-  }, [currentSlide])
+  }, [currentSlide, scrollToTop])
 
   const goToSlide = useCallback((index: number) => {
     if (index !== currentSlide && !isAnimating) {
@@ -635,13 +643,14 @@ export default function Presentation() {
       setIsVisible(false)
       setTimeout(() => {
         setCurrentSlide(index)
+        scrollToTop()
         setTimeout(() => {
           setIsVisible(true)
           setIsAnimating(false)
         }, 50)
       }, 400)
     }
-  }, [currentSlide, isAnimating])
+  }, [currentSlide, isAnimating, scrollToTop])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -674,34 +683,49 @@ export default function Presentation() {
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [goToNext, goToPrev, goToSlide, isAnimating])
 
-  // Touch/swipe support for mobile — only horizontal swipes, never block vertical scroll
-  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null)
-  const [touchEnd, setTouchEnd] = useState<{ x: number; y: number } | null>(null)
-  const minSwipeDistance = 50
+  // Touch/swipe support for mobile — passive listeners so iOS momentum scroll is never blocked
+  useEffect(() => {
+    const el = mainRef.current
+    if (!el) return
 
-  const onTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null)
-    setTouchStart({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY })
-  }
+    let startX = 0
+    let startY = 0
+    let endX = 0
+    let endY = 0
+    const minSwipeDistance = 50
 
-  const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY })
-  }
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return
-    const distanceX = touchStart.x - touchEnd.x
-    const distanceY = Math.abs(touchStart.y - touchEnd.y)
-    // Only trigger slide navigation if horizontal swipe is dominant (not vertical scroll)
-    if (distanceY > Math.abs(distanceX)) return
-    const isLeftSwipe = distanceX > minSwipeDistance
-    const isRightSwipe = distanceX < -minSwipeDistance
-    if (isLeftSwipe) {
-      goToNext()
-    } else if (isRightSwipe) {
-      goToPrev()
+    const onTouchStart = (e: TouchEvent) => {
+      startX = e.touches[0].clientX
+      startY = e.touches[0].clientY
+      endX = startX
+      endY = startY
     }
-  }
+
+    const onTouchMove = (e: TouchEvent) => {
+      endX = e.touches[0].clientX
+      endY = e.touches[0].clientY
+    }
+
+    const onTouchEnd = () => {
+      const distanceX = startX - endX
+      const distanceY = Math.abs(startY - endY)
+      // Only fire on dominant horizontal swipes
+      if (distanceY > Math.abs(distanceX)) return
+      if (distanceX > minSwipeDistance) goToNext()
+      else if (distanceX < -minSwipeDistance) goToPrev()
+    }
+
+    // passive: true tells iOS "we won't call preventDefault()" — unlocks smooth scrolling
+    el.addEventListener("touchstart", onTouchStart, { passive: true })
+    el.addEventListener("touchmove", onTouchMove, { passive: true })
+    el.addEventListener("touchend", onTouchEnd, { passive: true })
+
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart)
+      el.removeEventListener("touchmove", onTouchMove)
+      el.removeEventListener("touchend", onTouchEnd)
+    }
+  }, [goToNext, goToPrev])
 
   const slide = slides[currentSlide]
 
@@ -711,12 +735,10 @@ export default function Presentation() {
 
   return (
     <main
-      className="min-h-[100dvh] w-screen bg-black relative overflow-x-hidden overflow-y-auto lg:overflow-hidden lg:h-[100dvh] lg:max-h-[100dvh] focus:outline-none"
+      ref={mainRef}
+      className="min-h-[100dvh] w-screen bg-black relative overflow-x-hidden overflow-y-auto lg:overflow-hidden lg:h-[100dvh] lg:max-h-[100dvh] focus:outline-none overscroll-y-contain"
       style={{ WebkitOverflowScrolling: "touch" }}
       tabIndex={0}
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}
     >
       {/* Static color burst in lower left corner with pulse animation */}
       <div 
