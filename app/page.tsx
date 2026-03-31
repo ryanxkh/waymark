@@ -565,7 +565,7 @@ const slides: Slide[] = [
     type: "next-steps",
     sectionLabel: "NEXT STEPS",
     title: "Proof of Value and Workshop",
-    subtitle: "Before our conversation, I built a version of your site on Vercel to see what the performance delta looks like.",
+    subtitle: "",
     lighthouseOldImage: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/oldsitenotonvercel2-Tx1bUsaeu9iJwjKvZbpmMeTlP1MLWF.png",
     lighthouseNewImage: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202026-03-22%20at%2011.36.24%E2%80%AFPM-2npsiNb4jFdPZYPG7cMgiroUGlyyEc.png",
     siteScreenshot: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202026-03-22%20at%2010.24.50%E2%80%AFPM.png-4lpeGpScYiycPTjZAfexKYQ1sKSc4k.jpeg",
