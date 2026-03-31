@@ -674,25 +674,28 @@ export default function Presentation() {
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [goToNext, goToPrev, goToSlide, isAnimating])
 
-  // Touch/swipe support for mobile
-  const [touchStart, setTouchStart] = useState<number | null>(null)
-  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+  // Touch/swipe support for mobile — only horizontal swipes, never block vertical scroll
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null)
+  const [touchEnd, setTouchEnd] = useState<{ x: number; y: number } | null>(null)
   const minSwipeDistance = 50
 
   const onTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null)
-    setTouchStart(e.targetTouches[0].clientX)
+    setTouchStart({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY })
   }
 
   const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX)
+    setTouchEnd({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY })
   }
 
   const onTouchEnd = () => {
     if (!touchStart || !touchEnd) return
-    const distance = touchStart - touchEnd
-    const isLeftSwipe = distance > minSwipeDistance
-    const isRightSwipe = distance < -minSwipeDistance
+    const distanceX = touchStart.x - touchEnd.x
+    const distanceY = Math.abs(touchStart.y - touchEnd.y)
+    // Only trigger slide navigation if horizontal swipe is dominant (not vertical scroll)
+    if (distanceY > Math.abs(distanceX)) return
+    const isLeftSwipe = distanceX > minSwipeDistance
+    const isRightSwipe = distanceX < -minSwipeDistance
     if (isLeftSwipe) {
       goToNext()
     } else if (isRightSwipe) {
@@ -708,7 +711,8 @@ export default function Presentation() {
 
   return (
     <main
-      className="min-h-screen w-screen bg-black relative overflow-x-hidden overflow-y-auto lg:overflow-hidden lg:h-screen lg:max-h-screen focus:outline-none"
+      className="min-h-[100dvh] w-screen bg-black relative overflow-x-hidden overflow-y-auto lg:overflow-hidden lg:h-[100dvh] lg:max-h-[100dvh] focus:outline-none"
+      style={{ WebkitOverflowScrolling: "touch" }}
       tabIndex={0}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
@@ -787,7 +791,7 @@ export default function Presentation() {
       />
 
       {/* Inset content area */}
-      <div className="relative lg:absolute inset-0 lg:inset-4 xl:inset-8 2xl:inset-12 flex flex-col min-h-screen lg:min-h-0 p-4 sm:p-6 lg:p-0 pb-20 lg:pb-0">
+      <div className="relative lg:absolute inset-0 lg:inset-4 xl:inset-8 2xl:inset-12 flex flex-col min-h-[100dvh] lg:min-h-0 p-4 sm:p-6 lg:p-0 pb-24 lg:pb-0">
         {/* Decorative border overlay */}
         <div className="hidden lg:block absolute inset-0 border border-neutral-800/60 pointer-events-none" />
 
@@ -2652,7 +2656,10 @@ case "analytics":
       </div>
 
 {/* Navigation bar - arrows + dots */}
-      <div className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 bg-neutral-900/80 backdrop-blur-sm px-3 py-2 sm:px-4 sm:py-2.5 rounded-full border border-neutral-800/50 z-50">
+      <div
+        className="fixed left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 bg-neutral-900/90 backdrop-blur-sm px-3 py-2 sm:px-4 sm:py-2.5 rounded-full border border-neutral-800/50 z-50"
+        style={{ bottom: "max(1rem, env(safe-area-inset-bottom, 0px))" }}
+      >
         {/* Previous arrow */}
         <button
           onClick={goToPrev}
@@ -2701,7 +2708,10 @@ case "analytics":
       </div>
 
       {/* Keyboard hint - hidden on mobile */}
-      <div className="hidden sm:block fixed bottom-4 sm:bottom-6 right-4 sm:right-6 text-neutral-600 text-[10px] sm:text-xs font-mono">
+      <div
+        className="hidden sm:block fixed right-4 sm:right-6 text-neutral-600 text-[10px] sm:text-xs font-mono"
+        style={{ bottom: "max(1rem, env(safe-area-inset-bottom, 0px))" }}
+      >
         Use arrow keys to navigate
       </div>
 
