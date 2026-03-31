@@ -263,7 +263,7 @@
 /* Slide Container - standard wrapper for all slides */
 .slide-container {
   @apply w-full flex flex-col px-4 sm:px-6 lg:px-10 py-4 lg:py-8;
-  @apply overflow-visible lg:overflow-hidden;
+  @apply lg:overflow-hidden;
   @apply justify-start lg:justify-center;
   @apply lg:h-full;
 }

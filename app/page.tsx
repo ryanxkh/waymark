@@ -604,6 +604,8 @@ export default function Presentation() {
 
   // Reset scroll to top when changing slides
   const scrollToTop = useCallback(() => {
+    // On mobile, the document scrolls (not main). On desktop, main is the container.
+    window.scrollTo(0, 0)
     mainRef.current?.scrollTo(0, 0)
   }, [])
 
@@ -683,11 +685,8 @@ export default function Presentation() {
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [goToNext, goToPrev, goToSlide, isAnimating])
 
-  // Touch/swipe support for mobile — passive listeners so iOS momentum scroll is never blocked
+  // Touch/swipe support for mobile — passive listeners on document so iOS scroll is never blocked
   useEffect(() => {
-    const el = mainRef.current
-    if (!el) return
-
     let startX = 0
     let startY = 0
     let endX = 0
@@ -715,15 +714,14 @@ export default function Presentation() {
       else if (distanceX < -minSwipeDistance) goToPrev()
     }
 
-    // passive: true tells iOS "we won't call preventDefault()" — unlocks smooth scrolling
-    el.addEventListener("touchstart", onTouchStart, { passive: true })
-    el.addEventListener("touchmove", onTouchMove, { passive: true })
-    el.addEventListener("touchend", onTouchEnd, { passive: true })
+    document.addEventListener("touchstart", onTouchStart, { passive: true })
+    document.addEventListener("touchmove", onTouchMove, { passive: true })
+    document.addEventListener("touchend", onTouchEnd, { passive: true })
 
     return () => {
-      el.removeEventListener("touchstart", onTouchStart)
-      el.removeEventListener("touchmove", onTouchMove)
-      el.removeEventListener("touchend", onTouchEnd)
+      document.removeEventListener("touchstart", onTouchStart)
+      document.removeEventListener("touchmove", onTouchMove)
+      document.removeEventListener("touchend", onTouchEnd)
     }
   }, [goToNext, goToPrev])
 
@@ -736,8 +734,7 @@ export default function Presentation() {
   return (
     <main
       ref={mainRef}
-      className="min-h-[100dvh] w-screen bg-black relative overflow-x-hidden overflow-y-auto lg:overflow-hidden lg:h-[100dvh] lg:max-h-[100dvh] focus:outline-none overscroll-y-contain"
-      style={{ WebkitOverflowScrolling: "touch" }}
+      className="w-screen bg-black relative overflow-x-hidden lg:overflow-hidden lg:h-[100dvh] focus:outline-none"
       tabIndex={0}
     >
       {/* Static color burst in lower left corner with pulse animation */}
@@ -813,12 +810,12 @@ export default function Presentation() {
       />
 
       {/* Inset content area */}
-      <div className="relative lg:absolute inset-0 lg:inset-4 xl:inset-8 2xl:inset-12 flex flex-col min-h-[100dvh] lg:min-h-0 p-4 sm:p-6 lg:p-0 pb-24 lg:pb-0">
+      <div className="relative lg:absolute lg:inset-4 xl:inset-8 2xl:inset-12 flex flex-col lg:min-h-0 px-4 pt-4 pb-24 sm:px-6 sm:pt-6 lg:p-0">
         {/* Decorative border overlay */}
         <div className="hidden lg:block absolute inset-0 border border-neutral-800/60 pointer-events-none" />
 
         {/* Centered content */}
-        <div className="flex-1 flex flex-col items-center justify-start lg:justify-center gap-4 lg:gap-6 relative py-4 lg:py-0">
+        <div className="flex flex-col items-center justify-start lg:justify-center lg:flex-1 gap-4 lg:gap-6 relative lg:py-0">
           {slide.type === "title" ? (
             <>
               {/* Vercel triangle logo */}
