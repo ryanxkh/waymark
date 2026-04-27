@@ -99,12 +99,9 @@ export function FDISlide({ slide, isVisible }: { slide: FDISlideType; isVisible:
                   <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" />
                 </svg>
               </div>
-              <div>
-                <span className="block font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                  Vercel FDI
-                </span>
-                <span className="text-sm text-foreground">Frontend Development Infrastructure</span>
-              </div>
+              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                Vercel FDI
+              </span>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {slide.orbitNodes.map((node, i) => (
