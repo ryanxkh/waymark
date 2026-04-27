@@ -71,7 +71,7 @@ export function EdgeDeliverySlide({
                   direction="left"
                 >
                   <li className="flex items-start gap-3 rounded-lg border border-border bg-card px-4 py-3">
-                    <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md border border-border bg-gray-200">
+                    <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md border border-border bg-gray-300">
                       <Icon size={14} className="text-foreground" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -138,7 +138,7 @@ function DiagramRow({
 }) {
   return (
     <div className="overflow-hidden rounded-md border border-border">
-      <div className="border-b border-border bg-gray-100 px-3 py-1.5 text-right">
+      <div className="border-b border-border bg-gray-200 px-3 py-1.5 text-right">
         <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{label}</span>
       </div>
       <div className="bg-card p-3">
@@ -166,7 +166,7 @@ function CachingDiagram({ mode }: { mode: CachingMode }) {
       {(mode === "isr" || mode === "api") && (
         <>
           <div className="overflow-hidden rounded-md border border-border">
-            <div className="border-b border-border bg-gray-100 px-3 py-1.5 text-right">
+            <div className="border-b border-border bg-gray-200 px-3 py-1.5 text-right">
               <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                 Function Region
               </span>

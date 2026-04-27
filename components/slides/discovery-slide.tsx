@@ -41,7 +41,7 @@ export function DiscoverySlide({ slide, isVisible }: { slide: DiscoverySlideType
               <FadeIn key={card.id} isVisible={isVisible} delay={260 + index * 80}>
                 <AccordionItem
                   value={card.id}
-                  className="overflow-hidden rounded-lg border border-border bg-card data-[state=open]:bg-gray-100"
+                  className="overflow-hidden rounded-lg border border-border bg-card data-[state=open]:bg-gray-300"
                 >
                   <AccordionTrigger className="px-5 py-4 hover:no-underline sm:px-6 sm:py-5">
                     <div className="flex w-full flex-col gap-2 text-left">

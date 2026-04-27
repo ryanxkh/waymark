@@ -44,7 +44,7 @@ export function DevExSlide({ slide, isVisible }: { slide: DevExSlideType; isVisi
                   direction="left"
                 >
                   <li className="flex items-start gap-3 rounded-lg border border-border bg-card px-4 py-3">
-                    <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md border border-border bg-gray-200">
+                    <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md border border-border bg-gray-300">
                       <Icon size={14} className="text-foreground" />
                     </div>
                     <div className="flex-1 min-w-0">

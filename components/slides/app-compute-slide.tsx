@@ -40,7 +40,7 @@ export function AppComputeSlide({
                   direction="left"
                 >
                   <li className="flex items-start gap-3 rounded-lg border border-border bg-card px-4 py-3">
-                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md border border-border bg-gray-200">
+                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md border border-border bg-gray-300">
                       <Icon size={14} className="text-foreground" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -87,8 +87,8 @@ export function AppComputeSlide({
                   <div className="h-px w-10 bg-border" />
                   <div className="h-px w-10 bg-border" />
                 </div>
-                <div className="rounded-md border border-dashed border-gray-600 bg-gray-100 px-5 py-3">
-                  <span className="text-sm text-muted-foreground">PHP Monolith</span>
+                <div className="rounded-md border border-dashed border-gray-600 bg-gray-200 px-5 py-3">
+                  <span className="text-sm text-foreground">PHP Monolith</span>
                 </div>
                 <div className="h-px w-8 bg-border" />
               </div>
@@ -109,7 +109,7 @@ export function AppComputeSlide({
             </span>
             <div className="rounded-lg border border-border bg-card p-4">
               <div className="mb-3 text-center">
-                <span className="rounded border border-border bg-gray-100 px-2 py-1 font-mono text-[10px] text-muted-foreground">
+                <span className="rounded border border-border bg-gray-200 px-2 py-1 font-mono text-[10px] text-foreground">
                   Build Output API
                 </span>
               </div>
@@ -134,7 +134,7 @@ export function AppComputeSlide({
                       />
                       <polygon points="8,16 12,22 16,16" fill="currentColor" className="text-gray-700" />
                     </svg>
-                    <div className="w-full rounded-md border border-border bg-gray-100 px-2 py-1.5 text-center">
+                    <div className="w-full rounded-md border border-border bg-gray-200 px-2 py-1.5 text-center">
                       <span className="text-xs text-foreground">{path.target}</span>
                     </div>
                   </div>

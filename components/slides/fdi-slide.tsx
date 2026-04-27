@@ -59,7 +59,7 @@ export function FDISlide({ slide, isVisible }: { slide: FDISlideType; isVisible:
                 >
                   <li className="flex items-start gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:border-gray-500">
                     <div
-                      className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md border border-border bg-gray-200 text-foreground"
+                      className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md border border-border bg-gray-300 text-foreground"
                       aria-hidden
                     >
                       <Icon size={16} />
@@ -94,7 +94,7 @@ export function FDISlide({ slide, isVisible }: { slide: FDISlideType; isVisible:
         <FadeIn isVisible={isVisible} delay={300} className="lg:hidden">
           <div className="rounded-lg border border-border bg-card p-4">
             <div className="mb-3 flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-gray-200">
+              <div className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-gray-300">
                 <svg viewBox="0 0 76 65" className="h-3 w-3 fill-foreground" aria-hidden>
                   <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" />
                 </svg>

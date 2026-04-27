@@ -56,7 +56,7 @@ export function AISlide({ slide, isVisible }: { slide: AISlideType; isVisible: b
                   direction="left"
                 >
                   <li className="flex items-start gap-3 rounded-lg border border-border bg-card px-3 py-2.5">
-                    <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md border border-border bg-gray-200">
+                    <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md border border-border bg-gray-300">
                       <Icon size={14} className="text-foreground" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -76,9 +76,9 @@ export function AISlide({ slide, isVisible }: { slide: AISlideType; isVisible: b
 
           {/* Code snippet */}
           <FadeIn isVisible={isVisible} delay={460} className="mt-3">
-            <div className="rounded-lg border border-border bg-gray-100 px-3 py-3">
-              <pre className="overflow-x-auto font-mono text-[11px] leading-relaxed text-muted-foreground">
-                <code className="text-foreground">{slide.codeSnippet}</code>
+            <div className="rounded-lg border border-border bg-gray-200 px-3 py-3">
+              <pre className="overflow-x-auto font-mono text-[11px] leading-relaxed text-foreground">
+                <code>{slide.codeSnippet}</code>
               </pre>
             </div>
           </FadeIn>
@@ -109,7 +109,7 @@ export function AISlide({ slide, isVisible }: { slide: AISlideType; isVisible: b
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <li className="flex cursor-pointer items-start gap-3 rounded-lg border border-border bg-card px-4 py-3 transition-colors hover:border-gray-500 hover:bg-gray-100">
-                            <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md border border-border bg-gray-200">
+                            <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md border border-border bg-gray-300">
                               <Icon size={14} className="text-foreground" />
                             </div>
                             <div className="flex-1 min-w-0">
