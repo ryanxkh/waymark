@@ -74,13 +74,10 @@ export function AISlide({ slide, isVisible }: { slide: AISlideType; isVisible: b
             })}
           </ul>
 
-          {/* Code snippet */}
-          <FadeIn isVisible={isVisible} delay={460} className="mt-3">
-            <div className="rounded-lg border border-border bg-gray-200 px-3 py-3">
-              <pre className="overflow-x-auto font-mono text-[11px] leading-relaxed text-foreground">
-                <code>{slide.codeSnippet}</code>
-              </pre>
-            </div>
+          {/* Stats — sit directly under the products on the left column */}
+          <FadeIn isVisible={isVisible} delay={520} className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+            <StatBadge>{slide.stats.left}</StatBadge>
+            <StatBadge>{slide.stats.right}</StatBadge>
           </FadeIn>
         </div>
 
@@ -129,12 +126,6 @@ export function AISlide({ slide, isVisible }: { slide: AISlideType; isVisible: b
           </FadeIn>
         </div>
       </div>
-
-      {/* Stats — full-width footnote row */}
-      <FadeIn isVisible={isVisible} delay={520} className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
-        <StatBadge>{slide.stats.left}</StatBadge>
-        <StatBadge>{slide.stats.right}</StatBadge>
-      </FadeIn>
     </SlideShell>
   )
 }
