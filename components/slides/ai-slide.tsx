@@ -35,16 +35,16 @@ export function AISlide({ slide, isVisible }: { slide: AISlideType; isVisible: b
     <SlideShell>
       <SectionLabel isVisible={isVisible}>{slide.sectionLabel}</SectionLabel>
 
-      <div className="mt-3 flex flex-col gap-6 lg:flex-row lg:gap-10">
-        {/* Left: products + code */}
-        <div className="flex flex-1 flex-col lg:w-1/2">
-          <SlideTitle isVisible={isVisible} delay={60} className="mb-3">
-            {slide.title}
-          </SlideTitle>
-          <SlideSubtitle isVisible={isVisible} delay={140} className="mb-4">
-            {slide.subtitle}
-          </SlideSubtitle>
+      <SlideTitle isVisible={isVisible} delay={60} className="mt-3 mb-3 max-w-3xl">
+        {slide.title}
+      </SlideTitle>
+      <SlideSubtitle isVisible={isVisible} delay={140} className="mb-5">
+        {slide.subtitle}
+      </SlideSubtitle>
 
+      <div className="flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:gap-10">
+        {/* Left: products + code */}
+        <div className="flex min-w-0 flex-col">
           <ul className="flex flex-col gap-2">
             {slide.products.map((item, index) => {
               const Icon = productIcon[item.icon] ?? Globe
@@ -59,7 +59,7 @@ export function AISlide({ slide, isVisible }: { slide: AISlideType; isVisible: b
                     <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md border border-border bg-gray-300">
                       <Icon size={14} className="text-foreground" />
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div className="min-w-0 flex-1">
                       <div className="mb-0.5 flex items-center gap-2">
                         <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                           {item.step}
@@ -74,15 +74,7 @@ export function AISlide({ slide, isVisible }: { slide: AISlideType; isVisible: b
             })}
           </ul>
 
-          {/* Code snippet */}
-          <FadeIn isVisible={isVisible} delay={460} className="mt-3">
-            <div className="rounded-lg border border-border bg-gray-200 px-3 py-3">
-              <pre className="overflow-x-auto font-mono text-[11px] leading-relaxed text-foreground">
-                <code>{slide.codeSnippet}</code>
-              </pre>
-            </div>
-          </FadeIn>
-
+          {/* Stats — sit directly under the products on the left column */}
           <FadeIn isVisible={isVisible} delay={520} className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
             <StatBadge>{slide.stats.left}</StatBadge>
             <StatBadge>{slide.stats.right}</StatBadge>
@@ -90,7 +82,7 @@ export function AISlide({ slide, isVisible }: { slide: AISlideType; isVisible: b
         </div>
 
         {/* Right: opportunities */}
-        <div className="flex flex-col lg:w-1/2 lg:pt-12">
+        <div className="flex min-w-0 flex-col">
           <FadeIn isVisible={isVisible} delay={300}>
             <span className="mb-3 block font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
               Opportunities
@@ -112,7 +104,7 @@ export function AISlide({ slide, isVisible }: { slide: AISlideType; isVisible: b
                             <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md border border-border bg-gray-300">
                               <Icon size={14} className="text-foreground" />
                             </div>
-                            <div className="flex-1 min-w-0">
+                            <div className="min-w-0 flex-1">
                               <h4 className="mb-0.5 text-sm font-medium text-foreground">{useCase.title}</h4>
                               <p className="text-xs leading-relaxed text-muted-foreground">{useCase.description}</p>
                             </div>
