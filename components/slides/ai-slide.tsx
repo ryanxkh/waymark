@@ -35,9 +35,9 @@ export function AISlide({ slide, isVisible }: { slide: AISlideType; isVisible: b
     <SlideShell>
       <SectionLabel isVisible={isVisible}>{slide.sectionLabel}</SectionLabel>
 
-      <div className="mt-3 flex flex-col gap-6 lg:flex-row lg:gap-10">
+      <div className="mt-3 flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:gap-10">
         {/* Left: products + code */}
-        <div className="flex flex-1 flex-col lg:w-1/2">
+        <div className="flex min-w-0 flex-col">
           <SlideTitle isVisible={isVisible} delay={60} className="mb-3">
             {slide.title}
           </SlideTitle>
@@ -90,7 +90,7 @@ export function AISlide({ slide, isVisible }: { slide: AISlideType; isVisible: b
         </div>
 
         {/* Right: opportunities */}
-        <div className="flex flex-col lg:w-1/2 lg:pt-12">
+        <div className="flex min-w-0 flex-col lg:pt-12">
           <FadeIn isVisible={isVisible} delay={300}>
             <span className="mb-3 block font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
               Opportunities

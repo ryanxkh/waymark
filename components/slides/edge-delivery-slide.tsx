@@ -50,9 +50,9 @@ export function EdgeDeliverySlide({
     <SlideShell>
       <SectionLabel isVisible={isVisible}>{slide.sectionLabel}</SectionLabel>
 
-      <div className="mt-3 flex flex-col gap-6 lg:flex-row lg:gap-10">
+      <div className="mt-3 flex flex-col gap-6 lg:grid lg:grid-cols-[1.2fr_1fr] lg:gap-10">
         {/* Left: copy + items */}
-        <div className="flex flex-1 flex-col lg:w-[55%]">
+        <div className="flex min-w-0 flex-col">
           <SlideTitle isVisible={isVisible} delay={60} className="mb-3">
             {slide.title}
           </SlideTitle>
@@ -94,7 +94,7 @@ export function EdgeDeliverySlide({
         <FadeIn
           isVisible={isVisible}
           delay={360}
-          className="hidden lg:flex lg:w-[45%] flex-col"
+          className="hidden min-w-0 lg:flex flex-col"
         >
           <div className="mb-3 flex items-center justify-between">
             <h4 className="text-sm font-medium text-foreground">How Caching Works</h4>
