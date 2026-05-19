@@ -1,25 +1,41 @@
 "use client"
 
+import { useRouter, useParams } from "next/navigation"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { slides } from "@/lib/slides"
 
-interface PresentationNavProps {
-  currentSlide: number
-  totalSlides: number
-  onPrev: () => void
-  onNext: () => void
-  onJump: (index: number) => void
+function navigate(router: ReturnType<typeof useRouter>, slideId: number) {
+  const href = `/slide/${slideId}`
+  // Use the View Transitions API for a smooth cross-fade when supported.
+  if (typeof document !== "undefined" && "startViewTransition" in document) {
+    // @ts-expect-error - startViewTransition is not yet in all TS DOM lib versions
+    document.startViewTransition(() => router.push(href))
+  } else {
+    router.push(href)
+  }
 }
 
-export function PresentationNav({
-  currentSlide,
-  totalSlides,
-  onPrev,
-  onNext,
-  onJump,
-}: PresentationNavProps) {
-  const isFirst = currentSlide === 0
-  const isLast = currentSlide === totalSlides - 1
+export function PresentationNav() {
+  const router = useRouter()
+  const params = useParams<{ id?: string }>()
+  const totalSlides = slides.length
+
+  const parsed = Number(params?.id)
+  const currentIndex = Number.isFinite(parsed) && parsed >= 1 && parsed <= totalSlides ? parsed - 1 : 0
+
+  const isFirst = currentIndex === 0
+  const isLast = currentIndex === totalSlides - 1
+
+  const onPrev = () => {
+    if (!isFirst) navigate(router, currentIndex)
+  }
+  const onNext = () => {
+    if (!isLast) navigate(router, currentIndex + 2)
+  }
+  const onJump = (index: number) => {
+    if (index !== currentIndex) navigate(router, index + 1)
+  }
 
   return (
     <nav
@@ -42,7 +58,7 @@ export function PresentationNav({
 
       <div className="flex items-center gap-1 sm:gap-1.5">
         {Array.from({ length: totalSlides }).map((_, index) => {
-          const active = index === currentSlide
+          const active = index === currentIndex
           return (
             <button
               key={index}
